@@ -1,3 +1,5 @@
+package model;
+
 public class RadicalEntity {
 
     private int recordNum;

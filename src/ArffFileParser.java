@@ -1,30 +1,19 @@
+import model.RadicalEntity;
+import model.RadicalFieldEntities;
 import weka.core.Instance;
 import weka.core.Instances;
-import weka.core.converters.ArffSaver;
 
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 public class ArffFileParser {
 
-    private Instances dataSet;
-
-    public ArffFileParser(String filePath) throws IOException {
-        dataSet = extractDataSet(filePath);
 
 
-    }
-
-    public Instances getDataSet() {
-        return dataSet;
-    }
-
-    public void setDataSet(Instances dataSet) {
-        this.dataSet = dataSet;
+    public Instances ParseArffFile(String filePath) throws IOException {
+        return extractDataSet(filePath);
     }
 
     private Instances extractDataSet(String filePath) throws IOException {
@@ -37,19 +26,19 @@ public class ArffFileParser {
         return data;
     }
 
-    public void createRecordResolver() throws IOException {
-        ArrayList<RadicalFieldEntities> radicalFieldEntities = getRadicalEntities();
+    public void RemoveRadicalEntities(Instances dataSet) throws IOException {
+        ArrayList<RadicalFieldEntities> radicalFieldEntities = getRadicalEntities(dataSet);
         Set<Integer> radicalSet = mapToSet(radicalFieldEntities);
 
         for (Integer integer : radicalSet) {
             int num = integer;
             System.out.println("removing record: " + dataSet.remove(num));
         }
-        createNewArffFile("");
     }
-    private void createNewArffFile(String fileName) throws IOException {
 
-        BufferedWriter writer = new BufferedWriter(new FileWriter("resources/Newglass.arff"));
+    public void CreateNewArffFile(String fileName, Instances dataSet) throws IOException {
+
+        BufferedWriter writer = new BufferedWriter(new FileWriter(fileName));
         writer.write(dataSet.toString());
         writer.flush();
         writer.close();
@@ -63,8 +52,8 @@ public class ArffFileParser {
         return maxSet;
     }
 
-    private ArrayList<RadicalFieldEntities> getRadicalEntities(){
-        ArrayList<RadicalFieldEntities> radicalFieldEntities = initRadicalFieldEntities();
+    private ArrayList<RadicalFieldEntities> getRadicalEntities(Instances dataSet){
+        ArrayList<RadicalFieldEntities> radicalFieldEntities = initRadicalFieldEntities(dataSet);
         for (int i = 0; i < dataSet.numInstances(); i++)
         {
 
@@ -86,7 +75,7 @@ public class ArffFileParser {
         return radicalFieldEntities;
     }
 
-    private ArrayList<RadicalFieldEntities> initRadicalFieldEntities() {
+    private ArrayList<RadicalFieldEntities> initRadicalFieldEntities(Instances dataSet) {
         RadicalFieldEntities currRadicalFieldEntities;
         RadicalEntity currMinEntity, currMaxEntity;
         Instance firstInstance = dataSet.instance(0);
@@ -106,7 +95,7 @@ public class ArffFileParser {
         return  radicalFieldEntities;
     }
 
-    public void printFirstEntity(){
+    public void printFirstEntity(Instances dataSet){
         System.out.println(dataSet.instance(0));
         Instance firstInstance = dataSet.instance(0);
         System.out.println(firstInstance.value(0));
