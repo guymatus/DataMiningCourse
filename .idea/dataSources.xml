@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
+    <data-source source="LOCAL" name="jdbc:hsqldb:file:/Users/guymatus/IdeaProjects/Ex1DataMining/src/../../../Downloads/glass.arff/" uuid="45bb849b-db56-4222-a8e2-f0133537939c">
+      <driver-ref>hsqldb.local</driver-ref>
+      <synchronize>true</synchronize>
+      <configured-by-url>true</configured-by-url>
+      <jdbc-driver>org.hsqldb.jdbc.JDBCDriver</jdbc-driver>
+      <jdbc-url>jdbc:hsqldb:file:$PROJECT_DIR$/src/../../../Downloads/glass.arff/</jdbc-url>
+    </data-source>
+  </component>
+</project>
