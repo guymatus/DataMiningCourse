@@ -20,7 +20,7 @@ public class ArffUtils {
         String filePath = arffFolderPath + fileName;
         Instances dataSet = arffFileParser.ParseArffFile(filePath);
         arffFileParser.RemoveRadicalEntities(dataSet);
-        arffFileParser.CreateNewArffFile(arffFolderPath + "new_glass.arff", dataSet);
+        arffFileParser.CreateNewArffFile(arffFolderPath + "q5.arff", dataSet);
     }
 
     public void CreateFileWithAverageDataCompletion(String fileName) throws IOException {
@@ -60,7 +60,7 @@ public class ArffUtils {
             System.out.println(accumilator.getSum() / accumilator.getNumElements());
         }
 
-        arffFileParser.CreateNewArffFile(arffFolderPath + "newMissingGlass_avg",dataSet);
+        arffFileParser.CreateNewArffFile(arffFolderPath + "q6a.arff",dataSet);
         System.out.println("data set after completion: ");
         System.out.println(dataSet.toString());
     }
@@ -81,7 +81,7 @@ public class ArffUtils {
             }
         }
 
-        arffFileParser.CreateNewArffFile(arffFolderPath + "new_k_neighbours_glass.arff", dataSet);
+        arffFileParser.CreateNewArffFile(arffFolderPath + "q6c.arff", dataSet);
     }
 
     private double calculateAverageByKNearestNeighbours(Instances dataSet, int numOfNeighbours, int attributeIndex, double[] euclideanDistance) {
@@ -197,5 +197,6 @@ public class ArffUtils {
 
         return Math.sqrt(distance);
     }
+
 
 }

@@ -10,9 +10,10 @@ public class Main {
 //        arffFileParser.RemoveRadicalEntities(dataSet);
 //        arffFileParser.CreateNewArffFile("resources/new_glass.arff", dataSet);
         ArffUtils arffUtils = new ArffUtils();
-        //arffUtils.CreateFileWithAverageDataCompletion("glass_missing.arff");
+      //  arffUtils.CreateFileWithAverageDataCompletion("glass_missing.arff");
 //        arffUtils.CalculateEuclideanDistanceMatrix(dataSet);
-        arffUtils.CreateFileWithKNearestAverageDataCompletion(3,"glass_missing.arff");
+        arffUtils.CreateNonRadicalDataSetFile("glass.arff");
+        arffUtils.CreateFileWithKNearestAverageDataCompletion(7,"glass_missing.arff");
 
     }
 }

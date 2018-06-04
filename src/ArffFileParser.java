@@ -100,4 +100,6 @@ public class ArffFileParser {
         Instance firstInstance = dataSet.instance(0);
         System.out.println(firstInstance.value(0));
     }
+
+
 }
