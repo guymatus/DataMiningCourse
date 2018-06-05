@@ -1,4 +1,5 @@
 
+import model.FarthestPair;
 import weka.core.Instances;
 
 import java.io.IOException;
@@ -14,8 +15,8 @@ public class Main {
 //        arffUtils.CalculateEuclideanDistanceMatrix(dataSet);
         //arffUtils.CreateNonRadicalDataSetFile("glass.arff");
         //arffUtils.CreateFileWithKNearestAverageDataCompletion(7,"glass_missing.arff");
-        double[][] mat = arffUtils.CalculateMahalanobisMatrix("glass.arff");
-
+        FarthestPair oclidean = arffUtils.findFarthestPair(ArffUtils.e_distanceType.oclidean,"glass.arff");
+        FarthestPair mahalanobis = arffUtils.findFarthestPair(ArffUtils.e_distanceType.mahalanobis,"glass.arff");
     }
 }
 

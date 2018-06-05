@@ -10,6 +10,10 @@ import java.util.stream.Collectors;
 
 public class ArffUtils {
 
+    public enum e_distanceType{
+        oclidean, mahalanobis
+    }
+
     private static final String arffFolderPath = "resources/";
     private ArffFileParser arffFileParser;
 
@@ -206,8 +210,7 @@ public class ArffUtils {
         return Math.sqrt(distance);
     }
 
-    public double[][] CalculateMahalanobisMatrix(String fileName) throws IOException {
-        Instances dataSet = readInstances(fileName);
+    public double[][] CalculateMahalanobisMatrix(Instances dataSet) throws IOException {
         double[][] resultMatrix = new double[dataSet.numInstances()][dataSet.numInstances()];
         double[][] covarianceMatrix = MatrixUtils.readRevertedCovarianceMatrix
                 (arffFolderPath + "covariance_matrix.txt");
@@ -231,6 +234,16 @@ public class ArffUtils {
         }
 
         return resultMatrix;
+    }
+
+    public FarthestPair findFarthestPair(e_distanceType distanceType, String fileName) throws IOException {
+        Instances dataSet = readInstances(fileName);
+        FarthestPair farthestPair;
+        double[][] matrix = distanceType == e_distanceType.oclidean ?
+                CalculateEuclideanDistanceMatrix(dataSet) : CalculateMahalanobisMatrix(dataSet);
+        farthestPair = findFarthestTwoInstancesInMatrix(matrix);
+
+        return farthestPair;
     }
 
     private double calculateMahalanobisDistance(Instance instanceA, Instance instanceB, double[][] covarianceMatrix) throws IOException {
