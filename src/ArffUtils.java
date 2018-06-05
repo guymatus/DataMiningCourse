@@ -1,8 +1,9 @@
 import com.sun.tools.javac.util.Pair;
+import model.FarthestPair;
 import model.FieldAverageAccumilator;
 import weka.core.Instance;
 import weka.core.Instances;
-
+import org.apache.commons.lang3.ArrayUtils;
 import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -21,6 +22,13 @@ public class ArffUtils {
         Instances dataSet = arffFileParser.ParseArffFile(filePath);
         arffFileParser.RemoveRadicalEntities(dataSet);
         arffFileParser.CreateNewArffFile(arffFolderPath + "q5.arff", dataSet);
+    }
+
+    public Instances readInstances(String fileName) throws IOException {
+        String filePath = arffFolderPath + fileName;
+        Instances dataSet = arffFileParser.ParseArffFile(filePath);
+
+        return dataSet;
     }
 
     public void CreateFileWithAverageDataCompletion(String fileName) throws IOException {
@@ -198,5 +206,61 @@ public class ArffUtils {
         return Math.sqrt(distance);
     }
 
+    public double[][] CalculateMahalanobisMatrix(String fileName) throws IOException {
+        Instances dataSet = readInstances(fileName);
+        double[][] resultMatrix = new double[dataSet.numInstances()][dataSet.numInstances()];
+        double[][] covarianceMatrix = MatrixUtils.readRevertedCovarianceMatrix
+                (arffFolderPath + "covariance_matrix.txt");
+        double currentDistance;
+        String newLine = System.getProperty("line.separator");
 
+        for(int i = 0 ; i < dataSet.numInstances() ; i++){
+            for(int j = i +1 ; j < dataSet.numInstances() ; j++){
+                currentDistance = calculateMahalanobisDistance(dataSet.instance(i), dataSet.instance(j), covarianceMatrix);
+                resultMatrix[i][j] = currentDistance;
+                resultMatrix[j][i] = currentDistance;
+            }
+        }
+
+        for(int i = 0 ; i < resultMatrix.length ; i++) {
+            for(int j = 0 ; j < resultMatrix[0].length ; j++) {
+                System.out.print(resultMatrix[i][j] + ", ");
+            }
+
+            System.out.print("\b" + newLine);
+        }
+
+        return resultMatrix;
+    }
+
+    private double calculateMahalanobisDistance(Instance instanceA, Instance instanceB, double[][] covarianceMatrix) throws IOException {
+        double[][] diffTranspose = MatrixUtils.vectorDiffTranspose(instanceA, instanceB);
+        double[][] diff = MatrixUtils.vectorDiff(instanceA, instanceB);
+
+        double distance = MatrixUtils.matrixMultiply(MatrixUtils.matrixMultiply
+                (diffTranspose,covarianceMatrix), diff)[0][0];
+        distance = Math.sqrt(distance);
+
+        return distance;
+    }
+
+    public FarthestPair findFarthestTwoInstancesInMatrix(double[][] matrix) {
+        FarthestPair farthestInstances = new FarthestPair();
+        double maxDistance = 0;
+        double currMax = 0;
+        List<Double> currList;
+
+        for(int i = 0 ; i< matrix.length ; i++) {
+            currList = Arrays.asList(ArrayUtils.toObject(matrix[i]));
+            currMax = Collections.max(currList);
+            if(currMax > maxDistance) {
+                maxDistance = currMax;
+                farthestInstances.setInstanceAIndex(i);
+                farthestInstances.setInstanceBIndex(currList.indexOf(currMax));
+                farthestInstances.setDistance(currMax);
+            }
+        }
+
+        return farthestInstances;
+    }
 }

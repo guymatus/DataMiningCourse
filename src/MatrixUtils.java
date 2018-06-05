@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 public class MatrixUtils {
 
     private static double[][] createVector(Instance instance) {
-        double[][] vector = new double[instance.numAttributes()][1];
+        double[][] vector = new double[instance.numAttributes() -1][1];
         for(int i = 0 ; i < vector.length ; i++){
             vector[i][0] = instance.value(i);
         }
@@ -24,7 +24,7 @@ public class MatrixUtils {
     }
 
     private static double[][] createVectorTranspose(Instance instance) {
-        double[][] vector = new double[1][instance.numAttributes()];
+        double[][] vector = new double[1][instance.numAttributes() - 1];
         for(int i = 0 ; i < vector[0].length ; i++){
             vector[0][i] = instance.value(i);
         }
@@ -35,7 +35,7 @@ public class MatrixUtils {
     public static double[][] vectorDiff(Instance instance1, Instance instance2) {
         double[][] vector1 = createVector(instance1);
         double[][] vector2 = createVector(instance2);
-        double[][] result = new double[instance1.numAttributes()][1];
+        double[][] result = new double[instance1.numAttributes() - 1][1];
 
         for(int i = 0 ; i < result.length ; i++) {
             result[i][0] = vector1[i][0] - vector2[i][0];
@@ -47,7 +47,7 @@ public class MatrixUtils {
     public static double[][] vectorDiffTranspose(Instance instance1, Instance instance2) {
         double[][] vector1 = createVectorTranspose(instance1);
         double[][] vector2 = createVectorTranspose(instance2);
-        double[][] result = new double[1][instance1.numAttributes()];
+        double[][] result = new double[1][instance1.numAttributes() - 1];
 
         for(int i = 0 ; i < result[0].length ; i++){
             result[0][i] = vector1[0][i] - vector2[0][i];
@@ -81,18 +81,18 @@ public class MatrixUtils {
             rowSize = Integer.parseInt(reader.readLine());
             columnSize = Integer.parseInt(reader.readLine());
             result = new double[rowSize][columnSize];
+            line = reader.readLine();
 
-            do{
-                line = reader.readLine();
+            while(line != null) {
                 currList = Arrays.asList(line.split(",")).stream().map
                         (elem -> Double.parseDouble(elem)).collect(Collectors.toList());
-
-                for(int i = 0 ; i < currList.size() ; i++){
+                for (int i = 0; i < currList.size(); i++) {
                     result[currRow][i] = currList.get(i);
                 }
 
                 currRow++;
-            }while(line != null);
+                line = reader.readLine();
+            }
 
         }catch(Exception e){
             System.out.println("failed to parse matrix file: " + e.getMessage());

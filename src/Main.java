@@ -9,12 +9,12 @@ public class Main {
 //        Instances dataSet = arffFileParser.ParseArffFile("resources/glass_missing.arff");
 //        arffFileParser.RemoveRadicalEntities(dataSet);
 //        arffFileParser.CreateNewArffFile("resources/new_glass.arff", dataSet);
-        //ArffUtils arffUtils = new ArffUtils();
+        ArffUtils arffUtils = new ArffUtils();
       //  arffUtils.CreateFileWithAverageDataCompletion("glass_missing.arff");
 //        arffUtils.CalculateEuclideanDistanceMatrix(dataSet);
         //arffUtils.CreateNonRadicalDataSetFile("glass.arff");
         //arffUtils.CreateFileWithKNearestAverageDataCompletion(7,"glass_missing.arff");
-        double[][] mat = MatrixUtils.readRevertedCovarianceMatrix("resources/covariance_matrix.txt");
+        double[][] mat = arffUtils.CalculateMahalanobisMatrix("glass.arff");
 
     }
 }
